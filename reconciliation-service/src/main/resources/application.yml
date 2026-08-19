@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: reconciliation-service
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/reconciliation}
+    username: ${DATABASE_USERNAME:reconciliation}
+    password: ${DATABASE_PASSWORD:reconciliation}
+
+  jpa:
+    # Flyway owns the schema. Hibernate must never auto-generate or alter DDL —
+    # "validate" makes Hibernate refuse to start if the entities and the
+    # migrated schema disagree, which is the correctness check we want here.
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  flyway:
+    enabled: tru
+    locations: classpath:db/migration
+
+server:
+  port: ${PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
